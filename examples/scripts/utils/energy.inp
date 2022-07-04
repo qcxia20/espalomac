@@ -1,0 +1,40 @@
+* Energy Calculation
+
+bomlev -5
+
+
+!@workdir
+if @?workdir eq 1 then
+   set workdir @workdir
+else
+   set workdir .
+endif
+
+!@resi
+read sequence @resi 1
+
+!@cgenff
+if @cgenff eq true then
+   set toppar @workdir/toppar
+   stream @workdir/toppar.str
+endif
+
+!@str
+if @?str eq 1 then 
+   stream @str
+endif
+
+if @cgenff eq true then
+   generate @resi first none last none setup warn
+endif
+
+! modify cutoff
+if @modcutoff eq true then
+update cutnb 999.0 ctofnb 998.0 ctonnb 997.0 switch vswitch inbfrq 100
+endif
+
+!@crd
+read coor card name @crd
+
+energy
+echo ?ener
