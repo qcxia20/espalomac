@@ -178,6 +178,7 @@ def periodic(
 
     # energy = (k * (1.0 + cos_n_theta_minus_phases)).sum(dim=-1)
 
+    # Because k can be either +/-, a relu activation function will ignore the negative k, so should add 2 side to include actual value
     energy = (
         torch.nn.functional.relu(k) * (cos_n_theta_minus_phases + 1.0)
         - torch.nn.functional.relu(0.0 - k) * (cos_n_theta_minus_phases - 1.0)

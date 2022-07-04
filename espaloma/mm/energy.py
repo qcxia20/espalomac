@@ -2,7 +2,7 @@
 # IMPORTS
 # =============================================================================
 import torch
-
+from ase.units import kcal, mol, Hartree
 import espaloma as esp
 
 
@@ -376,6 +376,20 @@ def energy_in_graph(
     if "u0" in g.nodes["g"].data:
         g.apply_nodes(
             lambda node: {"u": node.data["u"] + node.data["u0"]},
+            ntype="g",
+        )
+
+    ## Use Hartree and Bohr as unit for parameter fitting
+    # Hartree_per_kcalmol = kcal / mol  / Hartree
+    # if  "u_charmm_totE_nodihe" in g.nodes["g"].data:
+        # g.apply_nodes(
+            # lambda node: {"u": node.data["u"] + node.data["u_charmm_totE_nodihe"]*(Hartree_per_kcalmol)},
+            # ntype="g",
+        # )
+
+    if  "u_charmm_totE_nodihe" in g.nodes["g"].data:
+        g.apply_nodes(
+            lambda node: {"u": node.data["u"] + node.data["u_charmm_totE_nodihe"]},
             ntype="g",
         )
 

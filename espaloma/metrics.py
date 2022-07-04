@@ -22,7 +22,7 @@ def center(metric, dim=1, reduction="none"):
         target = target - target.mean(dim=dim, keepdim=True)
 
         if reduction == "none":
-            return metric(input, target)
+            return metric(input, target) # first center, then calculate loss
         else:
             return getattr(torch, reduction)(metric(input, target))
 
